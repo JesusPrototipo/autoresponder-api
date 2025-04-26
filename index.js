@@ -11,27 +11,25 @@ app.post('/api/mensajes', (req, res) => {
     return res.status(403).json({ error: 'Acceso no autorizado' });
   }
 
-  const { senderMessage, senderName } = req.body;
-  let respuesta = "No entendí tu mensaje.";
+  const { senderMessage } = req.body;
 
-  if (senderMessage.toLowerCase() === "hi") {
-    respuesta = `Hi ${senderName}, how can I help you?`;
-    "type": "interactive" 
-  "interactive":{
-    "type": "button" ,
-    "header": {},
-    "body": {"hola que hace"},
-    "footer": {},
-    "action": {}
+  if (senderMessage && senderMessage.toLowerCase() === "hi") {
+    return res.json({
+      data: [
+        {
+          message: "Hola 👋 ¿En qué te puedo ayudar?",
+          buttons: ["Ver productos", "Hablar con soporte", "Ubicación"]
+        }
+      ]
+    });
   }
 
   res.json({
     data: [
-      { message: respuesta }
+      { message: "No entendí tu mensaje." }
     ]
   });
 });
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Servidor activo en puerto ${PORT}`));
-
