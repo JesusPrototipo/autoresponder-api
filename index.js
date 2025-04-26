@@ -16,6 +16,13 @@ app.post('/api/mensajes', (req, res) => {
 
   if (senderMessage.toLowerCase() === "hi") {
     respuesta = `Hi ${senderName}, how can I help you?`;
+    "type": "interactive" 
+  "interactive":{
+    "type": "button" ,
+    "header": {},
+    "body": {"hola que hace"},
+    "footer": {},
+    "action": {}
   }
 
   res.json({
