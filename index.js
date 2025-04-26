@@ -18,7 +18,20 @@ app.post('/api/mensajes', (req, res) => {
       data: [
         {
           message: "Hola 👋 ¿En qué te puedo ayudar?",
-          buttons: ["Ver productos", "Hablar con soporte", "Ubicación"]
+          buttons: [
+            {
+              title: "Ver productos",
+              payload: "ver_productos"
+            },
+            {
+              title: "Hablar con soporte",
+              payload: "hablar_soporte"
+            },
+            {
+              title: "Ubicación",
+              payload: "ubicacion"
+            }
+          ]
         }
       ]
     });
