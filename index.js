@@ -11,23 +11,16 @@ app.post('/api/mensajes', (req, res) => {
     return res.status(403).json({ error: 'Acceso no autorizado' });
   }
 
-  const { senderMessage } = req.body;
+  const { senderMessage, senderName } = req.body;
+  let respuesta = "No entendí tu mensaje.";
 
-  // Si el usuario envía "hi", se responde con el video
-  if (senderMessage && senderMessage.toLowerCase() === "hi") {
-    return res.json({
-      data: [
-        {
-          video: "https://streamable.com/160u1w"
-        }
-      ]
-    });
+  if (senderMessage.toLowerCase() === "hi") {
+    respuesta = `Hi ${senderName}, how can I help you?`;
   }
 
-  // Respuesta por defecto si el mensaje no es "hi"
   res.json({
     data: [
-      { message: "No entendí tu mensaje." }
+      { message: respuesta }
     ]
   });
 });
