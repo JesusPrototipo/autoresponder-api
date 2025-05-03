@@ -1,46 +1,32 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 const app = express();
-app.use(express.json());
+const PORT = process.env.PORT || 3000;
 
-// Puedes cambiar esto por una clave secreta si la configuras en la app
-const API_KEY = 'MI_CLAVE_SECRETA';
+app.use(bodyParser.json());
 
 app.post('/api/pransu', (req, res) => {
-  const headerKey = req.headers['x-api-key']; // asegúrate de usar este nombre si PransuInc lo permite
+  const userMessage = req.body.message?.toLowerCase() || "";
 
-  if (headerKey && headerKey !== API_KEY) {
-    return res.status(403).json({ error: 'Acceso denegado' });
+  let response = "No entendí tu mensaje. Por favor responde con:\n\n1. Ver catálogo\n2. Hablar con asesor\n3. Ubicación";
+
+  if (userMessage.includes("1") || userMessage.includes("catálogo")) {
+    response = "Aquí tienes nuestro catálogo: https://tu-catalogo.com";
+  } else if (userMessage.includes("2") || userMessage.includes("asesor")) {
+    response = "Un asesor se pondrá en contacto contigo muy pronto.";
+  } else if (userMessage.includes("3") || userMessage.includes("ubicación")) {
+    response = "Nuestra ubicación es: https://maps.google.com/tu-negocio";
   }
 
-  const { senderMessage } = req.body;
-
-  if (!senderMessage) {
-    return res.json({
-      data: [
-        { message: "No recibí ningún mensaje." }
-      ]
-    });
-  }
-
-  const mensaje = senderMessage.toLowerCase();
-
-  if (mensaje === 'hola' || mensaje === 'hi') {
-    return res.json({
-      data: [
-        {
-          message: "Hola, ¿qué deseas hacer?",
-          buttons: ["Ver catálogo", "Soporte", "Ubicación"]
-        }
-      ]
-    });
-  }
-
-  return res.json({
+  res.json({
     data: [
-      { message: "Lo siento, no entendí tu mensaje. Escribe 'hola' para comenzar." }
+      {
+        message: response
+      }
     ]
   });
 });
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Servidor activo en puerto ${PORT}`));
+app.listen(PORT, () => {
+  console.log(`Servidor funcionando en el puerto ${PORT}`);
+});
